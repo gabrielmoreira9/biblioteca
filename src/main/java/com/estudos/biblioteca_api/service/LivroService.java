@@ -11,14 +11,12 @@ import java.util.Map;
 @Service
 public class LivroService {
 
-    private final Map< Long, Livro> livros = new HashMap<>();
-
-    public LivroService() {
-        livros.put(1L, new Livro(1L, "Dom Casmurro", "Machado de Assis", 1899));
-        livros.put(3L, new Livro(3L, "1984", "George Orwell", 1949));
-        livros.put(2L, new Livro(2l, "O Senhor dos Anéis", "J.R.R. Tolkien", 1954));
-        livros.put(4L, new Livro(4l, "A Revolução dos Bichos", "George Orwell", 1945));
-    }
+    private final Map<Long, Livro> livros = new HashMap<>(Map.of(
+            1L, new Livro(1L, "Dom Casmurro", "Machado de Assis", 1899),
+            3L, new Livro(3L, "1984", "George Orwell", 1949),
+            2L, new Livro(2L, "O Senhor dos Anéis", "J.R.R. Tolkien", 1954),
+            4L, new Livro(4L, "A Revolução dos Bichos", "George Orwell", 1945)
+    ));
 
     public List <Livro> listarLivro(){
         return new ArrayList<>(livros.values());
