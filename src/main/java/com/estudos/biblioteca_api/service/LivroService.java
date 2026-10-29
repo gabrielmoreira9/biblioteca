@@ -1,26 +1,54 @@
 package com.estudos.biblioteca_api.service;
 
 import com.estudos.biblioteca_api.model.Livro;
+import com.estudos.biblioteca_api.repository.LivroRepositorio;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class LivroService {
 
-    private final Map <Long, Livro> livros;
+    private final LivroRepositorio livroRepositorio;
 
-    public LivroService(Map<Long, Livro> livros){
-        this.livros = livros;
+    public LivroService(LivroRepositorio livroRepositorio){
+        this.livroRepositorio = livroRepositorio;
     }
 
     public List <Livro> listarLivro(){
-        return new ArrayList<>(livros.values());
+        return livroRepositorio.findAll();
     }
 
-    public Livro buscarPorId(long id){
-        return livros.get(id);
-        }
+    public Livro buscarPorId(long id) {
+        return livroRepositorio.findById(id).orElse(null);
     }
+
+        public Livro salvarlivro(Livro livro){
+            return livroRepositorio.save(livro);
+        }
+
+        public boolean excluirLivro(Long id) {
+
+        if (!livroRepositorio.existsById(id)) {
+            return false;
+        }
+
+        livroRepositorio.deleteById(id);
+        return true;
+    }
+
+    public Livro atualizarLivro(Long id, Livro dadosAtualizados) {
+
+        Livro livro = livroRepositorio.findById(id).orElse(null);
+
+        if (livro == null) {
+            return null;
+        }
+
+        livro.setTitulo(dadosAtualizados.getTitulo());
+        livro.setAutor(dadosAtualizados.getAutor());
+        livro.setAnopublicacao(dadosAtualizados.getAnopublicacao());
+
+        return livroRepositorio.save(livro);
+    }
+}
