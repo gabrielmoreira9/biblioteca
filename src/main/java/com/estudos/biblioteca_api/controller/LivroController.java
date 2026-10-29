@@ -1,6 +1,7 @@
 package com.estudos.biblioteca_api.controller;
 
 import com.estudos.biblioteca_api.service.LivroService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +19,16 @@ public class LivroController {
     }
 
     @GetMapping("/livros")
-    public List<Livro> getLivros() {
-        return livroService.listarLivro();
+    public ResponseEntity<List<Livro>> getLivros() {
+        return ResponseEntity.ok(livroService.listarLivro());
     }
 
     @GetMapping("/livros/{id}")
-    public Livro buscarLivro(@PathVariable Long id) {
-        return livroService.buscarPorId(id);
+    public ResponseEntity <Livro> buscarLivro(@PathVariable Long id) {
+        Livro livro = livroService.buscarPorId(id);
+        if (livro == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(livro);
     }
 }
